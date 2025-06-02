@@ -119,64 +119,60 @@ export default class Adapter {
     }
 
     #relayout() {
-        if (this.#isDisposed) return;
-
-        if (this.#mode === Mode.none) return;
+        if (this.#isDisposed || this.#mode === Mode.none) return;
 
         if (!document?.body) {
             document?.addEventListener("DOMContentLoaded", () => {
-                if (this.#isDisposed) return;
-                this.#relayout();
+                if (!this.#isDisposed) this.#relayout();
             }, { once: true });
             return;
         }
 
-        const SCALE_VEC = {
-            x: 1,
-            y: 1
-        };
-
-        const [SCREEN_WIDTH, SCREEN_HEIGHT] = [document.documentElement.clientWidth, document.documentElement.clientHeight];
+        const [SCREEN_WIDTH, SCREEN_HEIGHT] = [
+            document.documentElement.clientWidth,
+            document.documentElement.clientHeight
+        ];
         const MARGIN_LEFT = (SCREEN_WIDTH - this.#sourceWidth) / 2;
         const MARGIN_TOP = (SCREEN_HEIGHT - this.#sourceHeight) / 2;
+        const PARENT_OVERFLOW = document.defaultView
+            .getComputedStyle(this.#element.parentNode).overflow;
 
-        SCALE_VEC.x = SCREEN_WIDTH / this.#sourceWidth;
-        SCALE_VEC.y = SCREEN_HEIGHT / this.#sourceHeight;
+        const SCALE_VEC = {
+            x: SCREEN_WIDTH / this.#sourceWidth,
+            y: SCREEN_HEIGHT / this.#sourceHeight
+        };
 
-        const PARENT_OVERFLOW = document.defaultView.getComputedStyle(this.#element.parentNode).overflow;
+        const unifyScale = (fn) => {
+            const scale = fn(SCALE_VEC.x, SCALE_VEC.y);
+            SCALE_VEC.x = SCALE_VEC.y = scale;
+        };
+
         switch (this.#mode) {
-            case Mode.cover: {
-                const SCALE = Math.max(SCALE_VEC.x, SCALE_VEC.y);
-                SCALE_VEC.x = SCALE_VEC.y = SCALE;
-
+            case Mode.cover:
+                unifyScale(Math.max);
                 if (PARENT_OVERFLOW !== "hidden") {
-                    console.error("在 cover 适配模式下，父元素的 overflow 样式如果不为 hidden 会出现滚动条。");
+                    console.error("在 cover 模式下，父元素的 overflow 不是 hidden 可能出现滚动条。");
                 }
-            } break;
-            case Mode.contain: {
-                const SCALE = Math.min(SCALE_VEC.x, SCALE_VEC.y);
-                SCALE_VEC.x = SCALE_VEC.y = SCALE;
-            } break;
-            case Mode.fixedWidth: {
+                break;
+            case Mode.contain:
+                unifyScale(Math.min);
+                break;
+            case Mode.fixedWidth:
                 SCALE_VEC.y = SCALE_VEC.x;
-
                 if (PARENT_OVERFLOW === "hidden") {
-                    console.error("在 fixedWidth 适配模式下，父元素的 overflow 样式如果为 hidden 会导致内容被裁剪。");
+                    console.error("在 fixedWidth 模式下，父元素的 overflow 为 hidden 会导致裁剪。");
                 }
-            } break;
+                break;
         }
 
-        const addPrefix = (property) => {
-            return `-moz-${property} -webkit-${property} -ms-${property} ${property}`;
-        }
-
+        const addPrefix = (prop) => `-moz-${prop} -webkit-${prop} -ms-${prop} ${prop}`;
         let rectStyle = `
             left: ${MARGIN_LEFT}px;
             top: ${MARGIN_TOP}px;
             width: ${this.#sourceWidth}px;
             height: ${this.#sourceHeight ? `${this.#sourceHeight}px` : "auto"};
-            min-height: ${this.#sourceHeight ? 'auto' : "100%"};
-            ${addPrefix(`transform-origin: center center;`)}
+            min-height: ${this.#sourceHeight ? "auto" : "100%"};
+            ${addPrefix("transform-origin: center center;")}
         `;
 
         if (this.#mode === Mode.fixedWidth) {
@@ -192,7 +188,6 @@ export default class Adapter {
 
         this.#styleElement.innerHTML = `
             ${SHARED_STYLE}
-
             [${this.#symbol}] {
                 position: absolute;
                 display: block;
@@ -201,14 +196,10 @@ export default class Adapter {
             }
         `;
 
-        requestAnimationFrame(() => {
-            this.#element.removeAttribute("sa-cloak");
-        });
+        requestAnimationFrame(() => this.#element.removeAttribute("sa-cloak"));
 
         if (!this.#relayoutCallback) {
-            this.#relayoutCallback = () => {
-                this.#relayout();
-            };
+            this.#relayoutCallback = () => this.#relayout();
             window.addEventListener("resize", this.#relayoutCallback, { passive: true });
         }
     }
