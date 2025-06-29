@@ -21,6 +21,7 @@ export default [
             "prefer-const": "warn",
             camelcase: "error",
             "no-duplicate-imports": "error",
+            "no-restricted-globals": "off",
             "prefer-template": "warn",
             "no-self-assign": "off",
             "no-global-assign": "warn",
@@ -38,14 +39,7 @@ export default [
             "no-loss-of-precision": "error",
             "no-irregular-whitespace": "warn",
             "no-const-assign": "error",
-            "no-class-assign": "error",
-            "no-restricted-globals": ["error", {
-                "name": "window",
-                "message": "请使用全局变量 globalThis"
-            }, {
-                    "name": "self",
-                    "message": "请使用全局变量 globalThis"
-                }]
+            "no-class-assign": "error"
         }
     },
     pluginPrettier
