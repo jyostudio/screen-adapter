@@ -76,6 +76,15 @@ export default class Adapter {
     #sourceHeight = 0;
 
     /**
+     * 缩放向量
+     * @type {{x: number, y: number}}
+     */
+    #scaleVector = {
+        x: 1,
+        y: 1
+    };
+
+    /**
      * 重排回调函数
      * @type {Function}
      */
@@ -86,6 +95,38 @@ export default class Adapter {
      * @type {number}
      */
     #debounceTimer;
+
+    /**
+     * 获取设计稿的宽度
+     * @return {number} 设计稿的宽度
+     */
+    get sourceWidth() {
+        return this.#sourceWidth;
+    }
+
+    /**
+     * 获取设计稿的高度
+     * @return {number} 设计稿的高度
+     */
+    get sourceHeight() {
+        return this.#sourceHeight;
+    }
+
+    /**
+     * 获取适配模式
+     * @return {Mode} 当前的适配模式
+     */
+    get mode() {
+        return this.#mode;
+    }
+
+    /**
+     * 获取缩放向量
+     * @returns {{x: number, y: number}} 当前的缩放向量
+     */
+    get scaleVector() {
+        return this.#scaleVector;
+    }
 
     static #_constructor = function (...params) {
         Adapter.#_constructor = overload()
@@ -100,7 +141,7 @@ export default class Adapter {
             .add([HTMLElement], function (element) {
                 this.#element = element;
                 // 为元素添加唯一标识属性
-                element.setAttribute(`${this.#symbol}`, "");
+                element.setAttribute(this.#symbol, "");
 
                 // 创建或获取样式元素
                 const STYLE_ID = `style-${this.#symbol}`;
@@ -157,11 +198,11 @@ export default class Adapter {
             document.documentElement.clientWidth,
             document.documentElement.clientHeight
         ];
-        
+
         // 计算居中偏移量
         const MARGIN_LEFT = (SCREEN_WIDTH - this.#sourceWidth) / 2;
         const MARGIN_TOP = (SCREEN_HEIGHT - this.#sourceHeight) / 2;
-        
+
         // 获取父元素的overflow样式，用于模式检查
         const PARENT_OVERFLOW = document.defaultView
             .getComputedStyle(this.#element.parentNode).overflow;
@@ -202,7 +243,7 @@ export default class Adapter {
 
         // CSS前缀添加辅助函数
         const addPrefix = (prop) => `-moz-${prop} -webkit-${prop} -ms-${prop} ${prop}`;
-        
+
         // 默认的元素样式（居中显示）
         let rectStyle = `
             left: ${MARGIN_LEFT}px;
@@ -235,6 +276,9 @@ export default class Adapter {
                 ${addPrefix(`transform: scale(${SCALE_VEC.x}, ${SCALE_VEC.y});`)}
             }
         `;
+
+        // 设置元素的缩放向量
+        this.#scaleVector = { x: SCALE_VEC.x, y: SCALE_VEC.y };
 
         // 异步移除遮罩，避免样式应用前的闪烁
         requestAnimationFrame(() => this.#element.removeAttribute("sa-cloak"));
@@ -317,6 +361,7 @@ export default class Adapter {
             this.#mode = Mode.none;
             this.#sourceWidth = 0;
             this.#sourceHeight = 0;
+            this.#scaleVector = { x: 1, y: 1 };
 
             // 移除resize事件监听器
             if (this.#relayoutCallback) {
@@ -342,7 +387,7 @@ export default class Adapter {
             this.#mode = null;
 
             // 清理DOM元素相关
-            this.#element.removeAttribute(`${this.#symbol}`);
+            this.#element.removeAttribute(this.#symbol);
             this.#element = null;
 
             // 移除样式元素

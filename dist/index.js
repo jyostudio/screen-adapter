@@ -1,4 +1,4 @@
-var _t2, _t3, _s, _e, _Class, _Symbol$dispose, _t$t, _t4, _s2, _e2, _u, _i, _l, _n, _c, _o, _r, _h, _t4_brand, _t5, _f;
+var _t2, _t3, _c, _e, _Class, _Symbol$dispose, _t$t, _t4, _c2, _e2, _u, _o, _s, _n, _l, _i, _a, _r, _h, _t4_brand, _t5, _f;
 function _classPrivateMethodInitSpec(e, a) { _checkPrivateRedeclaration(e, a), a.add(e); }
 function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
 function _possibleConstructorReturn(t, e) { if (e && ("object" == _typeof(e) || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
@@ -29,8 +29,8 @@ var u = function u(t, r) {
   });
 };
 var p = "*",
-  g = "...",
-  x = "\u21C4",
+  m = "...",
+  O = "\u21C4",
   R = "##INNER_TYPE##",
   $ = "@@INNER_TYPE@@",
   N = "##INNER_THROW_FN##",
@@ -42,7 +42,7 @@ function S(t, r) {
     return !1;
   }
   if (r !== null && r !== void 0 && (_r$k = r[k]) !== null && _r$k !== void 0 && _r$k.call(r, t)) return !0;
-  if (typeof r != "function") return r === p && t !== null || r === g || r === null && t === null || r === _typeof(t);
+  if (typeof r != "function") return r === p && t !== null || r === m || r === null && t === null || r === _typeof(t);
   switch (_typeof(t)) {
     case "function":
     case "object":
@@ -88,10 +88,10 @@ function M(t, r, e) {
     i = "";
   n.forEach(function (l, c, E) {
     var a = l.trim().split(" "),
-      m = a.length === 3 ? a[1] : "(\u533F\u540D)",
-      w = m.split(".").pop();
+      g = a.length === 3 ? a[1] : "(\u533F\u540D)",
+      w = g.split(".").pop();
     E[c] = {
-      fullMethodName: m,
+      fullMethodName: g,
       methodName: w,
       link: a.length === 3 ? a[2] : a[1]
     }, c ? h += "".concat(w, "\t").concat(E[c].link, "\n") : i = w;
@@ -105,9 +105,9 @@ function M(t, r, e) {
     if (!S(e[c], l)) {
       var _l$N;
       var E = Array.isArray(l) ? l.map(T).join("\u3001") : T(l);
-      o += "".concat(s ? "\n" : "", "\u53C2\u6570").concat(c + 1, "\uFF1A\u9884\u671F ").concat(E, " \u4F46\u5F97\u5230 ").concat(T(e[c]), "\u3002"), Array.isArray(l) ? l.forEach(function (a, m) {
+      o += "".concat(s ? "\n" : "", "\u53C2\u6570").concat(c + 1, "\uFF1A\u9884\u671F ").concat(E, " \u4F46\u5F97\u5230 ").concat(T(e[c]), "\u3002"), Array.isArray(l) ? l.forEach(function (a, g) {
         var _a$N;
-        typeof (a === null || a === void 0 ? void 0 : a[N]) == "function" && (o += "".concat(m === 0 ? "\n\u9644\u52A0\u4FE1\u606F\uFF1A\n" : "", "\u5C1D\u8BD5\u65B9\u6848").concat(c + 1, " - ").concat((_a$N = a[N]) === null || _a$N === void 0 ? void 0 : _a$N.call(a, e[c])));
+        typeof (a === null || a === void 0 ? void 0 : a[N]) == "function" && (o += "".concat(g === 0 ? "\n\u9644\u52A0\u4FE1\u606F\uFF1A\n" : "", "\u5C1D\u8BD5\u65B9\u6848").concat(c + 1, " - ").concat((_a$N = a[N]) === null || _a$N === void 0 ? void 0 : _a$N.call(a, e[c])));
       }) : typeof (l === null || l === void 0 ? void 0 : l[N]) == "function" && (o += "\n\u9644\u52A0\u4FE1\u606F\uFF1A\n\u5C1D\u8BD5\u65B9\u6848".concat(c + 1, " - ").concat((_l$N = l[N]) === null || _l$N === void 0 ? void 0 : _l$N.call(l, e[c]))), s = !0;
     }
   }), s) throw o = "\u65B9\u6CD5 ".concat(i, " \u8C03\u7528\u9519\u8BEF\n").concat(o), o += h, new Error(o);
@@ -136,14 +136,14 @@ function v() {
       var l = t[s],
         c = e[s],
         E = l.length;
-      if (!(c.length !== d && !c.rest || d === 0 && E && l[0] !== g)) {
+      if (!(c.length !== d && !c.rest || d === 0 && E && l[0] !== m)) {
         for (var a = 0; a < d; a++) {
-          var m = l[a] || l[E - 1];
-          if (!S(i[a], m)) {
+          var g = l[a] || l[E - 1];
+          if (!S(i[a], g)) {
             try {
-              var _m$x;
-              var w = m === null || m === void 0 || (_m$x = m[x]) === null || _m$x === void 0 ? void 0 : _m$x.call(m, i[a]);
-              if (S(w, m)) {
+              var _g$O;
+              var w = g === null || g === void 0 || (_g$O = g[O]) === null || _g$O === void 0 ? void 0 : _g$O.call(g, i[a]);
+              if (S(w, g)) {
                 i[a] = w;
                 continue;
               }
@@ -159,7 +159,7 @@ function v() {
   return u(h, "overload"), h.add = function (i, d) {
     if (!Array.isArray(t)) throw new TypeError("types \u5FC5\u987B\u662F\u6570\u7EC4\u3002");
     if (typeof d != "function") throw new TypeError("fn \u5FC5\u987B\u662F\u51FD\u6570\u3002");
-    for (var s = 0; s < i.length; s++) if (i[s] === g && s !== i.length - 1) throw new SyntaxError("".concat(g, " \u5FC5\u987B\u662F\u6700\u540E\u4E00\u4E2A\u53C2\u6570\u3002"));
+    for (var s = 0; s < i.length; s++) if (i[s] === m && s !== i.length - 1) throw new SyntaxError("".concat(m, " \u5FC5\u987B\u662F\u6700\u540E\u4E00\u4E2A\u53C2\u6570\u3002"));
     return t.forEach(function (s) {
       if (s.length === i.length) {
         for (var l = 0; l < s.length; l++) if (s[l] !== i[l]) return;
@@ -167,7 +167,7 @@ function v() {
       }
     }), t.forEach(function (s) {
       var l = Array.isArray(s);
-      if (typeof s != "function" && !l && s !== p && s !== g) throw new TypeError("\u671F\u671B\u7C7B\u578B\u4E3A Class\u3001Array\u3001".concat(p, " \u6216\u672B\u5C3E\u53C2\u6570\u4E5F\u53EF\u4EE5\u662F ").concat(g, "\u3002"));
+      if (typeof s != "function" && !l && s !== p && s !== m) throw new TypeError("\u671F\u671B\u7C7B\u578B\u4E3A Class\u3001Array\u3001".concat(p, " \u6216\u672B\u5C3E\u53C2\u6570\u4E5F\u53EF\u4EE5\u662F ").concat(m, "\u3002"));
       if (l) for (var c = 0; c < s.length; c++) {
         var _s$c;
         var E = _typeof(s[c]);
@@ -175,7 +175,7 @@ function v() {
       }
     }), t.push(i), r.push(d), e.push({
       length: i.length,
-      rest: i[i.length - 1] === g
+      rest: i[i.length - 1] === m
     }), h;
   }, h.any = function (i) {
     if (n) throw new Error("any \u51FD\u6570\u5DF2\u5B58\u5728\u3002");
@@ -190,11 +190,11 @@ var y = v().add([], function () {
   var e = v();
   return e.add(t, r), e;
 });
-var b = (_t3 = /*#__PURE__*/new WeakMap(), _s = /*#__PURE__*/new WeakMap(), _t2 = /*#__PURE__*/function () {
+var b = (_t3 = /*#__PURE__*/new WeakMap(), _c = /*#__PURE__*/new WeakMap(), _t2 = /*#__PURE__*/function () {
   function t() {
     _classCallCheck(this, t);
     _classPrivateFieldInitSpec(this, _t3, void 0);
-    _classPrivateFieldInitSpec(this, _s, "");
+    _classPrivateFieldInitSpec(this, _c, "");
     _defineProperty(this, Symbol.iterator, /*#__PURE__*/_regenerator().m(function _callee() {
       return _regenerator().w(function (_context) {
         while (1) switch (_context.n) {
@@ -214,7 +214,7 @@ var b = (_t3 = /*#__PURE__*/new WeakMap(), _s = /*#__PURE__*/new WeakMap(), _t2 
   return _createClass(t, [{
     key: "description",
     get: function get() {
-      return _classPrivateFieldGet(_s, this);
+      return _classPrivateFieldGet(_c, this);
     }
   }, {
     key: "valNumber",
@@ -325,9 +325,9 @@ var b = (_t3 = /*#__PURE__*/new WeakMap(), _s = /*#__PURE__*/new WeakMap(), _t2 
     }).add(["*"], function (e) {
       _classPrivateFieldSet(_t3, this, e);
     }).add([_t2, String], function (e, n) {
-      _classPrivateFieldSet(_t3, this, _classPrivateFieldGet(_t3, e)), _classPrivateFieldSet(_s, this, n);
+      _classPrivateFieldSet(_t3, this, _classPrivateFieldGet(_t3, e)), _classPrivateFieldSet(_c, this, n);
     }).add(["*", String], function (e, n) {
-      _classPrivateFieldSet(_t3, this, e), _classPrivateFieldSet(_s, this, n);
+      _classPrivateFieldSet(_t3, this, e), _classPrivateFieldSet(_c, this, n);
     })), _assertClassBrand(_t2, _t2, _e)._.apply(this, r);
   }, "#_constructor")
 }, _t2);
@@ -345,29 +345,53 @@ var f = (_Class = /*#__PURE__*/function (_b) {
   fill: 3,
   fixedWidth: 4
 }), _Class);
-var O = "\n[sa-cloak] {\n    display: none !important;\n}\n",
+var x = "\n[sa-cloak] {\n    display: none !important;\n}\n",
   L = (typeof document === "undefined" ? "undefined" : _typeof(document)) < "u" && _typeof(document.documentElement) < "u";
 (_Symbol$dispose = Symbol.dispose) !== null && _Symbol$dispose !== void 0 ? _Symbol$dispose : Symbol.dispose = Symbol["for"]("Symbol.dispose");
-var A = (_s2 = /*#__PURE__*/new WeakMap(), _e2 = /*#__PURE__*/new WeakMap(), _u = /*#__PURE__*/new WeakMap(), _i = /*#__PURE__*/new WeakMap(), _l = /*#__PURE__*/new WeakMap(), _n = /*#__PURE__*/new WeakMap(), _c = /*#__PURE__*/new WeakMap(), _o = /*#__PURE__*/new WeakMap(), _r = /*#__PURE__*/new WeakMap(), _h = /*#__PURE__*/new WeakMap(), _t4_brand = /*#__PURE__*/new WeakSet(), _t4 = /*#__PURE__*/function () {
+var A = (_c2 = /*#__PURE__*/new WeakMap(), _e2 = /*#__PURE__*/new WeakMap(), _u = /*#__PURE__*/new WeakMap(), _o = /*#__PURE__*/new WeakMap(), _s = /*#__PURE__*/new WeakMap(), _n = /*#__PURE__*/new WeakMap(), _l = /*#__PURE__*/new WeakMap(), _i = /*#__PURE__*/new WeakMap(), _a = /*#__PURE__*/new WeakMap(), _r = /*#__PURE__*/new WeakMap(), _h = /*#__PURE__*/new WeakMap(), _t4_brand = /*#__PURE__*/new WeakSet(), _t4 = /*#__PURE__*/function () {
   function t() {
     _classCallCheck(this, t);
     _classPrivateMethodInitSpec(this, _t4_brand);
-    _classPrivateFieldInitSpec(this, _s2, !1);
+    _classPrivateFieldInitSpec(this, _c2, !1);
     _classPrivateFieldInitSpec(this, _e2, !1);
     _classPrivateFieldInitSpec(this, _u, "sa-".concat(_t5._ = _assertClassBrand(_t4, t, (_t$t = _assertClassBrand(_t4, t, _t5)._, ++_t$t))));
-    _classPrivateFieldInitSpec(this, _i, void 0);
-    _classPrivateFieldInitSpec(this, _l, f.none);
+    _classPrivateFieldInitSpec(this, _o, void 0);
+    _classPrivateFieldInitSpec(this, _s, f.none);
     _classPrivateFieldInitSpec(this, _n, void 0);
-    _classPrivateFieldInitSpec(this, _c, 0);
-    _classPrivateFieldInitSpec(this, _o, 0);
+    _classPrivateFieldInitSpec(this, _l, 0);
+    _classPrivateFieldInitSpec(this, _i, 0);
+    _classPrivateFieldInitSpec(this, _a, {
+      x: 1,
+      y: 1
+    });
     _classPrivateFieldInitSpec(this, _r, void 0);
     _classPrivateFieldInitSpec(this, _h, void 0);
     for (var _len9 = arguments.length, _r2 = new Array(_len9), _key9 = 0; _key9 < _len9; _key9++) {
       _r2[_key9] = arguments[_key9];
     }
-    _assertClassBrand(_t4_brand, this, _d).call(this) || _assertClassBrand(_t4, t, _f)._.apply(this, _r2);
+    _assertClassBrand(_t4_brand, this, _E).call(this) || _assertClassBrand(_t4, t, _f)._.apply(this, _r2);
   }
   return _createClass(t, [{
+    key: "sourceWidth",
+    get: function get() {
+      return _classPrivateFieldGet(_l, this);
+    }
+  }, {
+    key: "sourceHeight",
+    get: function get() {
+      return _classPrivateFieldGet(_i, this);
+    }
+  }, {
+    key: "mode",
+    get: function get() {
+      return _classPrivateFieldGet(_s, this);
+    }
+  }, {
+    key: "scaleVector",
+    get: function get() {
+      return _classPrivateFieldGet(_a, this);
+    }
+  }, {
     key: "setMode",
     value: function setMode() {
       for (var _len0 = arguments.length, r = new Array(_len0), _key0 = 0; _key0 < _len0; _key0++) {
@@ -378,11 +402,11 @@ var A = (_s2 = /*#__PURE__*/new WeakMap(), _e2 = /*#__PURE__*/new WeakMap(), _u 
         if (_classPrivateFieldGet(_e2, this)) throw new Error("\u9002\u914D\u5668\u5DF2\u88AB\u9500\u6BC1\uFF0C\u65E0\u6CD5\u8BBE\u7F6E\u6A21\u5F0F\u3002");
         if (this.reset(), e === f.none) {
           requestAnimationFrame(function () {
-            _classPrivateFieldGet(_i, _this).removeAttribute("sa-cloak");
+            _classPrivateFieldGet(_o, _this).removeAttribute("sa-cloak");
           });
           return;
         }
-        _classPrivateFieldSet(_l, this, e);
+        _classPrivateFieldSet(_s, this, e);
         var o = e.description;
         switch (e) {
           case f.fill:
@@ -398,7 +422,7 @@ var A = (_s2 = /*#__PURE__*/new WeakMap(), _e2 = /*#__PURE__*/new WeakMap(), _u 
           default:
             throw new Error("\u4E0D\u652F\u6301\u7684\u6A21\u5F0F: ".concat(o, "\u3002"));
         }
-        _classPrivateFieldSet(_c, this, n.width || 0), _classPrivateFieldSet(_o, this, n.height || 0), _assertClassBrand(_t4_brand, this, _a).call(this);
+        _classPrivateFieldSet(_l, this, n.width || 0), _classPrivateFieldSet(_i, this, n.height || 0), _assertClassBrand(_t4_brand, this, _d).call(this);
       }), t.prototype.setMode.apply(this, r);
     }
   }, {
@@ -409,7 +433,10 @@ var A = (_s2 = /*#__PURE__*/new WeakMap(), _e2 = /*#__PURE__*/new WeakMap(), _u 
       }
       return t.prototype.reset = y([], function () {
         if (_classPrivateFieldGet(_e2, this)) throw new Error("\u9002\u914D\u5668\u5DF2\u88AB\u9500\u6BC1\uFF0C\u65E0\u6CD5\u91CD\u7F6E\u3002");
-        _classPrivateFieldSet(_l, this, f.none), _classPrivateFieldSet(_c, this, 0), _classPrivateFieldSet(_o, this, 0), _classPrivateFieldGet(_r, this) && (window.removeEventListener("resize", _classPrivateFieldGet(_r, this)), _classPrivateFieldSet(_r, this, null)), _classPrivateFieldGet(_n, this).innerHTML = O;
+        _classPrivateFieldSet(_s, this, f.none), _classPrivateFieldSet(_l, this, 0), _classPrivateFieldSet(_i, this, 0), _classPrivateFieldSet(_a, this, {
+          x: 1,
+          y: 1
+        }), _classPrivateFieldGet(_r, this) && (window.removeEventListener("resize", _classPrivateFieldGet(_r, this)), _classPrivateFieldSet(_r, this, null)), _classPrivateFieldGet(_n, this).innerHTML = x;
       }), t.prototype.reset.apply(this, r);
     }
   }, {
@@ -419,7 +446,7 @@ var A = (_s2 = /*#__PURE__*/new WeakMap(), _e2 = /*#__PURE__*/new WeakMap(), _u 
         r[_key10] = arguments[_key10];
       }
       return t.prototype.dispose = y([], function () {
-        _classPrivateFieldGet(_e2, this) || (_classPrivateFieldSet(_e2, this, !0), _classPrivateFieldSet(_l, this, null), _classPrivateFieldGet(_i, this).removeAttribute("".concat(_classPrivateFieldGet(_u, this))), _classPrivateFieldSet(_i, this, null), _classPrivateFieldGet(_n, this) && (_classPrivateFieldGet(_n, this).remove(), _classPrivateFieldSet(_n, this, null)), _classPrivateFieldGet(_r, this) && (window.removeEventListener("resize", _classPrivateFieldGet(_r, this)), _classPrivateFieldSet(_r, this, null)), _classPrivateFieldGet(_h, this) && (clearTimeout(_classPrivateFieldGet(_h, this)), _classPrivateFieldSet(_h, this, null)));
+        _classPrivateFieldGet(_e2, this) || (_classPrivateFieldSet(_e2, this, !0), _classPrivateFieldSet(_s, this, null), _classPrivateFieldGet(_o, this).removeAttribute(_classPrivateFieldGet(_u, this)), _classPrivateFieldSet(_o, this, null), _classPrivateFieldGet(_n, this) && (_classPrivateFieldGet(_n, this).remove(), _classPrivateFieldSet(_n, this, null)), _classPrivateFieldGet(_r, this) && (window.removeEventListener("resize", _classPrivateFieldGet(_r, this)), _classPrivateFieldSet(_r, this, null)), _classPrivateFieldGet(_h, this) && (clearTimeout(_classPrivateFieldGet(_h, this)), _classPrivateFieldSet(_h, this, null)));
       }), t.prototype.dispose.apply(this, r);
     }
   }, {
@@ -441,23 +468,23 @@ var A = (_s2 = /*#__PURE__*/new WeakMap(), _e2 = /*#__PURE__*/new WeakMap(), _u 
       if (!n) throw new Error("\u672A\u627E\u5230\u9009\u62E9\u5668\u4E3A \"".concat(e, "\" \u7684\u5143\u7D20"));
       return _assertClassBrand(_t4, _t4, _f)._.call(this, n);
     }).add([HTMLElement], function (e) {
-      _classPrivateFieldSet(_i, this, e), e.setAttribute("".concat(_classPrivateFieldGet(_u, this)), "");
+      _classPrivateFieldSet(_o, this, e), e.setAttribute(_classPrivateFieldGet(_u, this), "");
       var n = "style-".concat(_classPrivateFieldGet(_u, this));
-      if (_classPrivateFieldSet(_n, this, document.getElementById(n) || document.createElement("style")), _classPrivateFieldGet(_n, this).id = n, _classPrivateFieldGet(_n, this).innerHTML = O, document.head.appendChild(_classPrivateFieldGet(_n, this)), _classPrivateFieldGet(_i, this).parentNode === document.body) throw new Error("\u5C4F\u5E55\u9002\u914D\u5668\u7684\u7236\u5143\u7D20\u4E0D\u80FD\u662F body \u5143\u7D20\uFF0C\u8BF7\u4F7F\u7528\u5176\u4ED6\u5143\u7D20\u4F5C\u4E3A\u7236\u5143\u7D20\u3002");
+      if (_classPrivateFieldSet(_n, this, document.getElementById(n) || document.createElement("style")), _classPrivateFieldGet(_n, this).id = n, _classPrivateFieldGet(_n, this).innerHTML = x, document.head.appendChild(_classPrivateFieldGet(_n, this)), _classPrivateFieldGet(_o, this).parentNode === document.body) throw new Error("\u5C4F\u5E55\u9002\u914D\u5668\u7684\u7236\u5143\u7D20\u4E0D\u80FD\u662F body \u5143\u7D20\uFF0C\u8BF7\u4F7F\u7528\u5176\u4ED6\u5143\u7D20\u4F5C\u4E3A\u7236\u5143\u7D20\u3002");
     })), _assertClassBrand(_t4, _t4, _f)._.apply(this, r);
   }, "#_constructor")
 }, _t4);
-function _d() {
-  return L || (console.error("\u5C4F\u5E55\u9002\u914D\u5668\u65E0\u6CD5\u4F7F\u7528\uFF0C\u8BF7\u786E\u4FDD\u5728\u5BA2\u6237\u7AEF\u73AF\u5883\u4E2D\u4F7F\u7528\u3002"), _classPrivateFieldSet(_s2, this, !0)), _classPrivateFieldGet(_s2, this);
+function _E() {
+  return L || (console.error("\u5C4F\u5E55\u9002\u914D\u5668\u65E0\u6CD5\u4F7F\u7528\uFF0C\u8BF7\u786E\u4FDD\u5728\u5BA2\u6237\u7AEF\u73AF\u5883\u4E2D\u4F7F\u7528\u3002"), _classPrivateFieldSet(_c2, this, !0)), _classPrivateFieldGet(_c2, this);
 }
-function _a() {
+function _d() {
   var _document,
     _this2 = this;
-  if (_classPrivateFieldGet(_e2, this) || _classPrivateFieldGet(_l, this) === f.none) return;
+  if (_classPrivateFieldGet(_e2, this) || _classPrivateFieldGet(_s, this) === f.none) return;
   if (!((_document = document) !== null && _document !== void 0 && _document.body)) {
     var _document2;
     (_document2 = document) === null || _document2 === void 0 || _document2.addEventListener("DOMContentLoaded", function () {
-      _classPrivateFieldGet(_e2, _this2) || _assertClassBrand(_t4_brand, _this2, _a).call(_this2);
+      _classPrivateFieldGet(_e2, _this2) || _assertClassBrand(_t4_brand, _this2, _d).call(_this2);
     }, {
       once: !0
     });
@@ -466,18 +493,18 @@ function _a() {
   var _ref = [document.documentElement.clientWidth, document.documentElement.clientHeight],
     r = _ref[0],
     e = _ref[1],
-    n = (r - _classPrivateFieldGet(_c, this)) / 2,
-    o = (e - _classPrivateFieldGet(_o, this)) / 2,
-    h = document.defaultView.getComputedStyle(_classPrivateFieldGet(_i, this).parentNode).overflow,
+    n = (r - _classPrivateFieldGet(_l, this)) / 2,
+    o = (e - _classPrivateFieldGet(_i, this)) / 2,
+    h = document.defaultView.getComputedStyle(_classPrivateFieldGet(_o, this).parentNode).overflow,
     i = {
-      x: r / _classPrivateFieldGet(_c, this),
-      y: e / _classPrivateFieldGet(_o, this)
+      x: r / _classPrivateFieldGet(_l, this),
+      y: e / _classPrivateFieldGet(_i, this)
     },
     d = u(function (c) {
       var E = c(i.x, i.y);
       i.x = i.y = E;
     }, "unifyScale");
-  switch (_classPrivateFieldGet(_l, this)) {
+  switch (_classPrivateFieldGet(_s, this)) {
     case f.cover:
       d(Math.max), h !== "hidden" && console.error("\u5728 cover \u6A21\u5F0F\u4E0B\uFF0C\u7236\u5143\u7D20\u7684 overflow \u4E0D\u662F hidden \u53EF\u80FD\u51FA\u73B0\u6EDA\u52A8\u6761\u3002");
       break;
@@ -491,12 +518,15 @@ function _a() {
   var s = u(function (c) {
       return "-moz-".concat(c, " -webkit-").concat(c, " -ms-").concat(c, " ").concat(c);
     }, "addPrefix"),
-    l = "\n            left: ".concat(n, "px;\n            top: ").concat(o, "px;\n            width: ").concat(_classPrivateFieldGet(_c, this), "px;\n            height: ").concat(_classPrivateFieldGet(_o, this) ? "".concat(_classPrivateFieldGet(_o, this), "px") : "auto", ";\n            min-height: ").concat(_classPrivateFieldGet(_o, this) ? "auto" : "100%", ";\n            ").concat(s("transform-origin: center center;"), "\n        ");
-  _classPrivateFieldGet(_l, this) === f.fixedWidth && (l = "\n                left: ".concat(n, "px;\n                top: 0;\n                width: ").concat(_classPrivateFieldGet(_c, this), "px;\n                height: auto;\n                min-height: ").concat(1 / i.y * 100, "%;\n                ").concat(s("transform-origin: center top;"), "\n            ")), _classPrivateFieldGet(_n, this).innerHTML = "\n            ".concat(O, "\n            [").concat(_classPrivateFieldGet(_u, this), "] {\n                position: absolute;\n                display: block;\n                ").concat(l, "\n                ").concat(s("transform: scale(".concat(i.x, ", ").concat(i.y, ");")), "\n            }\n        "), requestAnimationFrame(function () {
-    return _classPrivateFieldGet(_i, _this2).removeAttribute("sa-cloak");
+    l = "\n            left: ".concat(n, "px;\n            top: ").concat(o, "px;\n            width: ").concat(_classPrivateFieldGet(_l, this), "px;\n            height: ").concat(_classPrivateFieldGet(_i, this) ? "".concat(_classPrivateFieldGet(_i, this), "px") : "auto", ";\n            min-height: ").concat(_classPrivateFieldGet(_i, this) ? "auto" : "100%", ";\n            ").concat(s("transform-origin: center center;"), "\n        ");
+  _classPrivateFieldGet(_s, this) === f.fixedWidth && (l = "\n                left: ".concat(n, "px;\n                top: 0;\n                width: ").concat(_classPrivateFieldGet(_l, this), "px;\n                height: auto;\n                min-height: ").concat(1 / i.y * 100, "%;\n                ").concat(s("transform-origin: center top;"), "\n            ")), _classPrivateFieldGet(_n, this).innerHTML = "\n            ".concat(x, "\n            [").concat(_classPrivateFieldGet(_u, this), "] {\n                position: absolute;\n                display: block;\n                ").concat(l, "\n                ").concat(s("transform: scale(".concat(i.x, ", ").concat(i.y, ");")), "\n            }\n        "), _classPrivateFieldSet(_a, this, {
+    x: i.x,
+    y: i.y
+  }), requestAnimationFrame(function () {
+    return _classPrivateFieldGet(_o, _this2).removeAttribute("sa-cloak");
   }), _classPrivateFieldGet(_r, this) || (_classPrivateFieldSet(_r, this, function () {
     clearTimeout(_classPrivateFieldGet(_h, _this2)), _classPrivateFieldSet(_h, _this2, setTimeout(function () {
-      return _assertClassBrand(_t4_brand, _this2, _a).call(_this2);
+      return _assertClassBrand(_t4_brand, _this2, _d).call(_this2);
     }, 16));
   }), window.addEventListener("resize", _classPrivateFieldGet(_r, this), {
     passive: !0

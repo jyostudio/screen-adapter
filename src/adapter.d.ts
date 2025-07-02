@@ -6,6 +6,29 @@ import Mode from "./mode.d.ts";
  */
 export default class Adapter {
     /**
+     * 获取设计稿的宽度
+     * @return {number} 设计稿宽度
+     */
+    get sourceWidth(): number;
+
+    /**
+     * 获取设计稿的高度
+     * @return {number} 设计稿高度
+     */
+    get sourceHeight(): number;
+
+    /**
+     * 获取适配模式
+     */
+    get mode(): Mode;
+
+    /**
+     * 获取缩放向量
+     * @returns {{ x: number, y: number }}
+     */
+    get scaleVector(): { x: number; y: number };
+
+    /**
      * 创建一个屏幕适配器实例
      * @param selector - 元素选择器
      */
