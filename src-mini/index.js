@@ -1,35 +1,32 @@
 var Mode = (function () {
     function Mode() { }
-    ["none", "cover", "contain", "fill", "fixedWidth"].map(function (v) {
+    // 使用forEach替代map，因为不需要返回值
+    ["none", "cover", "contain", "fill", "fixedWidth"].forEach(function (v) {
         Mode[v] = new Mode();
     });
     return Mode;
 })();
 
-var Adapter = (function (win, doc) {
+var Adapter = (function (w, d) {
     /**
      * 共享样式：用于在适配过程中隐藏元素，避免闪烁
      */
-    var SHARED_STYLE = "[sa-cloak]{display:none !important;}";
+    var SS = "[sa-cloak]{display:none !important;}";
 
     /**
      * 检查是否在客户端渲染环境（浏览器环境）
      */
-    var IS_CSR = !!doc;
+    var CSR = !!d;
 
-    if (typeof Symbol === "function") {
-        /**
-         * 确保 Symbol.dispose 可用，用于资源清理
-         */
-        Symbol.dispose = Symbol.dispose || Symbol.for("Symbol.dispose");
-    }
+    // Symbol.dispose 支持
+    typeof Symbol === "function" && !Symbol.dispose && (Symbol.dispose = Symbol.for("Symbol.dispose"));
 
     // 计数器
-    var counter = 0;
+    var c = 0;
 
-    function Adapter() {
+    function Adapter(selector) {
         this._iD = false; // 适配器是否已被释放
-        this._s = "sa-" + ++counter; // 适配器的唯一标识符
+        this._s = "sa-" + ++c; // 适配器的唯一标识符
         this._el = null; // 绑定的元素
         this._se = null; // 样式元素
         this._rc = null; // 重排回调函数
@@ -39,25 +36,39 @@ var Adapter = (function (win, doc) {
         this.sourceHeight = 0; // 设计稿的高度
         this.scaleVector = { x: 1, y: 1 }; // 缩放向量
 
-        var arg = arguments[0];
+        // 检查参数是否存在
+        if (!selector) throw new Error("Selector parameter is required");
 
-        if (!arg) throw new Error();
+        // 非客户端渲染环境直接返回
+        if (!CSR) return;
 
-        if (!IS_CSR) return;
+        var el;
+        // 处理字符串选择器
+        if (typeof selector === "string") {
+            el = d.querySelector(selector);
+            if (!el) throw new Error("Element not found for selector: " + selector);
+        } 
+        // 处理DOM元素
+        else if (typeof selector === "object" && selector instanceof HTMLElement) {
+            el = selector;
+        } 
+        // 无效参数类型
+        else {
+            throw new Error("Invalid selector type. Expected string or HTMLElement");
+        }
 
-        if (typeof arg === "string") arg = doc.querySelector(selector);
+        this._el = el;
+        // 为元素添加唯一标识属性
+        el.setAttribute(this._s, "");
 
-        if (typeof arg === "object" && arg instanceof HTMLElement) {
-            this._el = arg;
-            // 为元素添加唯一标识属性
-            element.setAttribute(this._s, "");
-
-            // 创建或获取样式元素
-            var STYLE_ID = "style-" + this._s;
-            this._se = doc.getElementById(STYLE_ID) || doc.createElement("style");
-            this._se.id = STYLE_ID;
-            this._se.innerHTML = SHARED_STYLE;
-            doc.head.appendChild(this._se);
+        // 创建样式元素
+        var sid = "style-" + this._s;
+        this._se = d.getElementById(sid);
+        if (!this._se) {
+            this._se = d.createElement("style");
+            this._se.id = sid;
+            this._se.innerHTML = SS;
+            d.head.appendChild(this._se);
         }
     }
 
@@ -73,12 +84,12 @@ var Adapter = (function (win, doc) {
             var self = this;
 
             // 等待DOM加载完成
-            if (!doc.body) {
-                var s = "DOMContentLoaded";
-                doc.addEventListener(s, function fn() {
+            if (!d.body) {
+                var fn = function() {
                     if (!self._iD) self._relayout();
-                    doc.removeEventListener(s, fn);
-                });
+                    d.removeEventListener("DOMContentLoaded", fn);
+                };
+                d.addEventListener("DOMContentLoaded", fn);
                 return;
             }
 
@@ -86,95 +97,100 @@ var Adapter = (function (win, doc) {
             var sh = this.sourceHeight;
 
             // 获取当前屏幕尺寸
-            var de = doc.documentElement;
+            var de = d.documentElement;
             var SW = de.clientWidth;
             var SH = de.clientHeight;
 
-            // 计算居中偏移量
-            var ML = (SW - sw) / 2;
-            var MT = (SH - sh) / 2;
-
             // 计算缩放比例向量
-            var SV = {
+            var sv = {
                 x: SW / sw,
                 y: SH / sh
             };
 
-            // 统一缩放比例的辅助函数
-            var us = function (fn) {
-                var scale = fn(SV.x, SV.y);
-                SV.x = SV.y = scale;
-            };
-
             // 根据不同模式计算缩放比例
+            var s;
             switch (this.mode) {
                 case Mode.cover:
                     // 覆盖模式：使用较大的缩放比例，可能会裁剪内容
-                    us(Math.max);
+                    s = Math.max(sv.x, sv.y);
+                    sv.x = sv.y = s;
                     break;
                 case Mode.contain:
                     // 包含模式：使用较小的缩放比例，确保内容完全可见
-                    us(Math.min);
+                    s = Math.min(sv.x, sv.y);
+                    sv.x = sv.y = s;
                     break;
                 case Mode.fixedWidth:
                     // 固定宽度模式：Y轴缩放跟随X轴
-                    SV.y = SV.x;
+                    sv.y = sv.x;
                     break;
             }
 
+            // 计算居中偏移量
+            var ml = (SW - sw) / 2;
+            var mt = (SH - sh) / 2;
+            var fw = this.mode === Mode.fixedWidth;
+
             // CSS前缀添加辅助函数
-            function addPrefix(prop) {
-                return "-webkit-" + prop + " -moz-" + prop + " -ms-" + prop + " " + prop;
+            function ap(p) {
+                return "-webkit-" + p + " -moz-" + p + " -ms-" + p + " " + p;
             }
 
-            var ifw = this.mode === Mode.fixedWidth
-            var to = "transform-origin: center ";
-            // 默认的元素样式（居中显示）
-            var rs = [
-                "left:" + ML + "px",
-                "top:" + (ifw ? 0 : MT) + "px",
+            // 构建样式规则
+            var to = "transform-origin: center " + (fw ? "top;" : "center;");
+            var es = [
+                "left:" + ml + "px",
+                "top:" + (fw ? 0 : mt) + "px",
                 "width:" + sw + "px",
-                "height:" + ((sh || ifw) ? `${sh}px` : "auto"),
-                "min-height:" + ifw ? ((1 / SV.y * 100) + "%") : (sh ? "auto" : "100%"),
-                addPrefix(to + ifw ? "top;" : "center;")
+                "height:" + (sh || fw ? sh + "px" : "auto"),
+                "min-height:" + (fw ? ((1 / sv.y * 100) + "%") : (sh ? "auto" : "100%")),
+                ap(to)
             ].join("; ");
 
+            var ts = ap("transform: scale(" + sv.x + ", " + sv.y + ");");
+
             // 应用计算出的样式到元素
-            this._se.innerHTML = [
-                SHARED_STYLE,
-                "[" + this._s + "]{position:absolute;display:block;" + rs + addPrefix("transform: scale(" + SV.x + ", " + SV.y + ");") + "}"
-            ].join("");
+            this._se.innerHTML = SS + "[" + this._s + "]{position:absolute;display:block;" + es + ts + "}";
 
             // 设置元素的缩放向量
-            this.scaleVector = { x: SV.x, y: SV.y };
+            this.scaleVector = { x: sv.x, y: sv.y };
 
             // 异步移除遮罩，避免样式应用前的闪烁
             setTimeout(function () {
-                self._el.removeAttribute("sa-cloak")
+                self._el && self._el.removeAttribute("sa-cloak");
             }, 33.33);
 
             // 初始化resize事件监听器（仅执行一次）
             if (!this._rc) {
-                this._rc = () => {
+                this._rc = function() {
                     // 使用防抖机制，避免频繁的重排操作
-                    clearTimeout(this._dt);
-                    this._dt = setTimeout(function () {
-                        self._relayout()
+                    clearTimeout(self._dt);
+                    self._dt = setTimeout(function () {
+                        self._relayout();
                     }, 33.33);
                 };
-                win.addEventListener("resize", this._rc);
+                w.addEventListener("resize", this._rc);
             }
         },
+        /**
+         * 设置适配模式
+         * @param {Object} mode - 适配模式
+         * @param {Object} options - 配置选项，包含width和height
+         */
         setMode(mode, options) {
-            if (this._iD) throw new Error();
+            if (this._iD) throw new Error("Adapter has been disposed");
+
+            // 确保options是对象
+            options = options || {};
 
             // 重置当前状态
             this.reset();
 
             // 如果是none模式，直接移除遮罩并返回
             if (mode === Mode.none) {
+                var self = this;
                 setTimeout(function () {
-                    this._el.removeAttribute("sa-cloak");
+                    self._el && self._el.removeAttribute("sa-cloak");
                 }, 33.33);
                 return;
             }
@@ -188,8 +204,11 @@ var Adapter = (function (win, doc) {
             // 执行重排
             this._relayout();
         },
+        /**
+         * 重置适配器状态
+         */
         reset() {
-            if (this._iD) throw new Error();
+            if (this._iD) throw new Error("Adapter has been disposed");
 
             // 重置模式和尺寸参数
             this.mode = Mode.none;
@@ -199,13 +218,22 @@ var Adapter = (function (win, doc) {
 
             // 移除resize事件监听器
             if (this._rc) {
-                win.removeEventListener("resize", this._rc);
+                w.removeEventListener("resize", this._rc);
                 this._rc = null;
             }
 
+            // 清除防抖定时器
+            if (this._dt) {
+                clearTimeout(this._dt);
+                this._dt = null;
+            }
+
             // 重置样式为初始状态
-            this._se.innerHTML = SHARED_STYLE;
+            this._se && (this._se.innerHTML = SS);
         },
+        /**
+         * 销毁适配器，释放所有资源
+         */
         dispose() {
             // 防止重复销毁
             if (this._iD) return;
@@ -216,8 +244,10 @@ var Adapter = (function (win, doc) {
             this.mode = null;
 
             // 清理DOM元素相关
-            this._el.removeAttribute(this._s);
-            this._el = null;
+            if (this._el) {
+                this._el.removeAttribute(this._s);
+                this._el = null;
+            }
 
             // 移除样式元素
             if (this._se) {
@@ -227,7 +257,7 @@ var Adapter = (function (win, doc) {
 
             // 移除事件监听器
             if (this._rc) {
-                win.removeEventListener("resize", this._rc);
+                w.removeEventListener("resize", this._rc);
                 this._rc = null;
             }
 
@@ -239,12 +269,10 @@ var Adapter = (function (win, doc) {
         }
     };
 
-    if (typeof Symbol === "function" && Symbol.dispose) {
-        // 确保适配器支持 Symbol.dispose 方法
-        Adapter.prototype[Symbol.dispose] = function () {
-            this.dispose();
-        };
-    }
+    // 确保适配器支持 Symbol.dispose 方法
+    typeof Symbol === "function" && Symbol.dispose && (Adapter.prototype[Symbol.dispose] = function () {
+        this.dispose();
+    });
 
     return Adapter;
 })(window, document);

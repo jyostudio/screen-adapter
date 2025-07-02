@@ -1,113 +1,105 @@
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-var M = Object.defineProperty;
-var h = function h(s, e) {
-  return M(s, "name", {
-    value: e,
-    configurable: !0
-  });
-};
 var o = function () {
-    function s() {}
-    return h(s, "Mode"), ["none", "cover", "contain", "fill", "fixedWidth"].map(function (e) {
-      s[e] = new s();
-    }), s;
+    function n() {}
+    return ["none", "cover", "contain", "fill", "fixedWidth"].forEach(function (s) {
+      n[s] = new n();
+    }), n;
   }(),
-  L = function (s, e) {
-    var u = "[sa-cloak]{display:none !important;}",
-      p = !!e;
-    typeof Symbol == "function" && (Symbol.dispose = Symbol.dispose || Symbol["for"]("Symbol.dispose"));
+  g = function (_n, s) {
+    var d = "[sa-cloak]{display:none !important;}",
+      y = !!s;
+    typeof Symbol == "function" && !Symbol.dispose && (Symbol.dispose = Symbol["for"]("Symbol.dispose"));
     var b = 0;
-    function c() {
-      this._iD = !1, this._s = "sa-" + ++b, this._el = null, this._se = null, this._rc = null, this._dt = null, this.mode = o.none, this.sourceWidth = 0, this.sourceHeight = 0, this.scaleVector = {
+    function c(t) {
+      if (this.r = !1, this.o = "sa-" + ++b, this.i = null, this.t = null, this.e = null, this.s = null, this.mode = o.none, this.sourceWidth = 0, this.sourceHeight = 0, this.scaleVector = {
         x: 1,
         y: 1
-      };
-      var t = arguments[0];
-      if (!t) throw new Error();
-      if (p && (typeof t == "string" && (t = e.querySelector(selector)), _typeof(t) == "object" && t instanceof HTMLElement)) {
-        this._el = t, element.setAttribute(this._s, "");
-        var r = "style-" + this._s;
-        this._se = e.getElementById(r) || e.createElement("style"), this._se.id = r, this._se.innerHTML = u, e.head.appendChild(this._se);
+      }, !t) throw new Error("Selector parameter is required");
+      if (y) {
+        var i;
+        if (typeof t == "string") {
+          if (i = s.querySelector(t), !i) throw new Error("Element not found for selector: " + t);
+        } else if (_typeof(t) == "object" && t instanceof HTMLElement) i = t;else throw new Error("Invalid selector type. Expected string or HTMLElement");
+        this.i = i, i.setAttribute(this.o, "");
+        var r = "style-" + this.o;
+        this.t = s.getElementById(r), this.t || (this.t = s.createElement("style"), this.t.id = r, this.t.innerHTML = d, s.head.appendChild(this.t));
       }
     }
-    return h(c, "Adapter"), c.prototype = {
-      _relayout: function _relayout() {
-        var _this = this;
-        if (this._iD || this.mode === o.none) return;
+    return c.prototype = {
+      n: function n() {
+        if (this.r || this.mode === o.none) return;
         var t = this;
-        if (!e.body) {
-          var r = "DOMContentLoaded";
-          e.addEventListener(r, h(function n() {
-            t._iD || t._relayout(), e.removeEventListener(r, n);
-          }, "fn"));
+        if (!s.body) {
+          var _i = function i() {
+            t.r || t.n(), s.removeEventListener("DOMContentLoaded", _i);
+          };
+          s.addEventListener("DOMContentLoaded", _i);
           return;
         }
-        var d = this.sourceWidth,
-          a = this.sourceHeight,
-          f = e.documentElement,
-          _ = f.clientWidth,
-          m = f.clientHeight,
-          x = (_ - d) / 2,
-          S = (m - a) / 2,
-          i = {
-            x: _ / d,
-            y: m / a
+        var r = this.sourceWidth,
+          h = this.sourceHeight,
+          f = s.documentElement,
+          m = f.clientWidth,
+          v = f.clientHeight,
+          e = {
+            x: m / r,
+            y: v / h
           },
-          v = h(function (n) {
-            var E = n(i.x, i.y);
-            i.x = i.y = E;
-          }, "us");
+          a;
         switch (this.mode) {
           case o.cover:
-            v(Math.max);
+            a = Math.max(e.x, e.y), e.x = e.y = a;
             break;
           case o.contain:
-            v(Math.min);
+            a = Math.min(e.x, e.y), e.x = e.y = a;
             break;
           case o.fixedWidth:
-            i.y = i.x;
+            e.y = e.x;
             break;
         }
-        function y(n) {
-          return "-webkit-" + n + " -moz-" + n + " -ms-" + n + " " + n;
+        var x = (m - r) / 2,
+          E = (v - h) / 2,
+          l = this.mode === o.fixedWidth;
+        function p(u) {
+          return "-webkit-" + u + " -moz-" + u + " -ms-" + u + " " + u;
         }
-        h(y, "addPrefix");
-        var l = this.mode === o.fixedWidth,
-          g = "transform-origin: center ",
-          w = ["left:" + x + "px", "top:" + (l ? 0 : S) + "px", "width:" + d + "px", "height:" + (a || l ? "".concat(a, "px") : "auto"), "min-height:" + l ? 1 / i.y * 100 + "%" : a ? "auto" : "100%", y(g + l ? "top;" : "center;")].join("; ");
-        this._se.innerHTML = [u, "[" + this._s + "]{position:absolute;display:block;" + w + y("transform: scale(" + i.x + ", " + i.y + ");") + "}"].join(""), this.scaleVector = {
-          x: i.x,
-          y: i.y
+        var w = "transform-origin: center " + (l ? "top;" : "center;"),
+          S = ["left:" + x + "px", "top:" + (l ? 0 : E) + "px", "width:" + r + "px", "height:" + (h || l ? h + "px" : "auto"), "min-height:" + (l ? 1 / e.y * 100 + "%" : h ? "auto" : "100%"), p(w)].join("; "),
+          M = p("transform: scale(" + e.x + ", " + e.y + ");");
+        this.t.innerHTML = d + "[" + this.o + "]{position:absolute;display:block;" + S + M + "}", this.scaleVector = {
+          x: e.x,
+          y: e.y
         }, setTimeout(function () {
-          t._el.removeAttribute("sa-cloak");
-        }, 33.33), this._rc || (this._rc = function () {
-          clearTimeout(_this._dt), _this._dt = setTimeout(function () {
-            t._relayout();
+          t.i && t.i.removeAttribute("sa-cloak");
+        }, 33.33), this.e || (this.e = function () {
+          clearTimeout(t.s), t.s = setTimeout(function () {
+            t.n();
           }, 33.33);
-        }, s.addEventListener("resize", this._rc));
+        }, _n.addEventListener("resize", this.e));
       },
-      setMode: function setMode(t, r) {
-        if (this._iD) throw new Error();
-        if (this.reset(), t === o.none) {
+      setMode: function setMode(t, i) {
+        if (this.r) throw new Error("Adapter has been disposed");
+        if (i = i || {}, this.reset(), t === o.none) {
+          var r = this;
           setTimeout(function () {
-            this._el.removeAttribute("sa-cloak");
+            r.i && r.i.removeAttribute("sa-cloak");
           }, 33.33);
           return;
         }
-        this.mode = t, this.sourceWidth = r.width || 0, this.sourceHeight = r.height || 0, this._relayout();
+        this.mode = t, this.sourceWidth = i.width || 0, this.sourceHeight = i.height || 0, this.n();
       },
       reset: function reset() {
-        if (this._iD) throw new Error();
+        if (this.r) throw new Error("Adapter has been disposed");
         this.mode = o.none, this.sourceWidth = 0, this.sourceHeight = 0, this.scaleVector = {
           x: 1,
           y: 1
-        }, this._rc && (s.removeEventListener("resize", this._rc), this._rc = null), this._se.innerHTML = u;
+        }, this.e && (_n.removeEventListener("resize", this.e), this.e = null), this.s && (clearTimeout(this.s), this.s = null), this.t && (this.t.innerHTML = d);
       },
       dispose: function dispose() {
-        this._iD || (this._iD = !0, this.mode = null, this._el.removeAttribute(this._s), this._el = null, this._se && (this._se.remove(), this._se = null), this._rc && (s.removeEventListener("resize", this._rc), this._rc = null), this._dt && (clearTimeout(this._dt), this._dt = null));
+        this.r || (this.r = !0, this.mode = null, this.i && (this.i.removeAttribute(this.o), this.i = null), this.t && (this.t.remove(), this.t = null), this.e && (_n.removeEventListener("resize", this.e), this.e = null), this.s && (clearTimeout(this.s), this.s = null));
       }
     }, typeof Symbol == "function" && Symbol.dispose && (c.prototype[Symbol.dispose] = function () {
       this.dispose();
     }), c;
   }(window, document);
-export { L as ScreenAdapter, o as ScreenAdapterMode };
+export { g as ScreenAdapter, o as ScreenAdapterMode };
