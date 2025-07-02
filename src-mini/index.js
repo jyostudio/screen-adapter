@@ -7,7 +7,10 @@ var Mode = (function () {
     return Mode;
 })();
 
-var Adapter = (function (w, d) {
+var Adapter = (function () {
+    var w = typeof window !== "undefined" ? window : void 0;
+    var d = typeof document !== "undefined" ? document : void 0;
+
     /**
      * 共享样式：用于在适配过程中隐藏元素，避免闪烁
      */
@@ -16,7 +19,7 @@ var Adapter = (function (w, d) {
     /**
      * 检查是否在客户端渲染环境（浏览器环境）
      */
-    var CSR = !!d;
+    var CSR = !!w || !!d;
 
     // Symbol.dispose 支持
     typeof Symbol === "function" && !Symbol.dispose && (Symbol.dispose = Symbol.for("Symbol.dispose"));
@@ -275,6 +278,6 @@ var Adapter = (function (w, d) {
     });
 
     return Adapter;
-})(window, document);
+})();
 
 export { Adapter as ScreenAdapter, Mode as ScreenAdapterMode };
