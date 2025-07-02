@@ -1,6 +1,6 @@
 {
   "name": "@jyostudio/screen-adapter",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Screen adapter",
   "source": "src/index.js",
   "main": "dist/index.js",
@@ -14,7 +14,9 @@
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
     "format": "prettier --write ./src",
-    "build": "node esbuild.config.js && babel --out-file ./dist/index.js ./dist/index.js"
+    "build": "node esbuild.config.js && babel --out-file ./dist/index.js ./dist/index.js",
+    "build:mini": "node esbuild.mini-config.js && babel --out-file ./dist/index-mini.js ./dist/index-mini.js",
+    "build:all": "npm run build && npm run build:mini"
   },
   "repository": {
     "type": "git",
